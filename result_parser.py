@@ -68,7 +68,7 @@ def parse_results():
         plt.grid(True, axis='y', zorder=0)
         x = np.arange(values.shape[0])
         for j in range(values.shape[1]):
-            bar_values = values[:, j, 2, t]  # Using only the 50% IoU threshold
+            bar_values = values[:, j, 1, t]  # Using only the 50% IoU threshold
             label = trackers[j]
             ax.bar(x + bar_width * j - bar_width * 3, bar_values, bar_width, label=label, zorder=2)
         ax.set_xlabel("Video")
@@ -87,7 +87,7 @@ def parse_results():
         rects = []
         for j in x:
             bar_values = [values[:, j, threshold, t].mean() for threshold in range(values.shape[-2])]
-            bars_x = [j - (threshold + 1) * bar_width * 1.5 for threshold in range(values.shape[-2])]
+            bars_x = [j + (threshold - 1) * bar_width * 1.5 for threshold in range(values.shape[-2])]
             rects.append(ax.bar(bars_x, bar_values, bar_width, zorder=2))
         ax.set_xlabel("Tracking method")
         ax.set_ylabel("Frames per second" if t == 2 else "Percentage")
