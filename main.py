@@ -143,21 +143,25 @@ def read_ground_truth(path):
     return ground_truth
 
 
-def test_ground_truth(folder, gt):
+def visualize_bounding_boxes(folder, gt, predictions=None, delay=24):
     """
     use this function to see the ground-truth boxes on the sequence.
     :param folder: path to the folder containing the frames of the video sequence.
-    :param gt: box location for each frame (output of read_ground_truth).
+    :param gt: ground truth box location for each frame (output of read_ground_truth).
+    :param predictions: prediction box location for each frame.
+    :param delay: delay between each frame.
     :return: void
     """
     frames = get_frames(folder)
 
     for i, frame in enumerate(frames):
-        box = gt[i]
+        gt_bb = gt[i]
+        pred_bb = predictions[i]
         frame = cv2.imread(frame, cv2.IMREAD_COLOR)
-        cv2.rectangle(frame, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), color=(0, 0, 255))
+        cv2.rectangle(frame, (gt_bb[0], gt_bb[1]), (gt_bb[0] + gt_bb[2], gt_bb[1] + gt_bb[3]), color=(255, 0, 0))
+        cv2.rectangle(frame, (pred_bb[0], pred_bb[1]), (pred_bb[0] + pred_bb[2], pred_bb[1] + pred_bb[3]), color=(0, 0, 255))
         cv2.imshow('sequence', frame)
-        cv2.waitKey(delay=24)
+        cv2.waitKey(delay=delay)
 
 
 def track(folder, first_bb, tracker):
@@ -191,8 +195,6 @@ def main():
         if "groundtruth.txt" not in files:
             continue
         dataset = path.split("\\")[-1]
-        # if dataset != "car":
-        #     continue
         path_gt = f'{path}/groundtruth.txt'
         trackers = {
             "CSRT": cv2.TrackerCSRT_create(),
@@ -204,7 +206,7 @@ def main():
             "MOSSE": cv2.TrackerMOSSE_create(),
         }
         gt = read_ground_truth(path_gt)
-        # test_ground_truth(path, gt)
+        # visualize_bounding_boxes(path, gt)
         # continue
         for tracker_name, tracker in trackers.items():
             print("Computing tracking with", tracker_name)
