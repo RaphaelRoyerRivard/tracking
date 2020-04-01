@@ -1,11 +1,13 @@
 import os
 import time
 import cv2
+import keyboard
 
 
 def bb_iou(box1, box2):
     """
     computes intersection over union (iou) between 2 bounding boxes.
+    DO NOT USE! There is a bug in it, so it returns invalid values or sometimes plain wrong IoU.
     :param box1: prediction box.
     :param box2: gt box.
     :return: iou.
@@ -26,6 +28,13 @@ def bb_iou(box1, box2):
 
 
 def bb_iou2(box1, box2):
+    """
+    computes intersection over union (iou) between 2 bounding boxes.
+    Comes from https://stackoverflow.com/a/42874377/1084822
+    :param box1: prediction box.
+    :param box2: gt box.
+    :return: iou.
+    """
     if box1[2] == 0 or box1[3] == 0:
         return 0
 
@@ -162,6 +171,12 @@ def visualize_bounding_boxes(folder, gt, predictions=None, delay=24):
         cv2.rectangle(frame, (pred_bb[0], pred_bb[1]), (pred_bb[0] + pred_bb[2], pred_bb[1] + pred_bb[3]), color=(0, 0, 255))
         cv2.imshow('sequence', frame)
         cv2.waitKey(delay=delay)
+        if keyboard.is_pressed("space"):
+            while True:
+                cv2.waitKey(delay=300)
+                if keyboard.read_key() == "space":
+                    cv2.waitKey(delay=300)
+                    break
 
 
 def track(folder, first_bb, tracker):

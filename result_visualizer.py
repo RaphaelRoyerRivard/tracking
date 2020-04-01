@@ -15,4 +15,4 @@ def visualize_result(result_file_path):
 
 
 if __name__ == '__main__':
-    visualize_result("results/hand_CSRT.txt")
+    visualize_result("results/cup_CSRT.txt")
