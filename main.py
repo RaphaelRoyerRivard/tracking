@@ -203,7 +203,7 @@ def track(folder, first_bb, tracker):
 
 
 def main():
-    output_folder = 'results'
+    output_folder = 'results_70'
     data_folder = "data"
     for path, subfolders, files in os.walk(data_folder):
         print(path)
@@ -227,7 +227,7 @@ def main():
             print("Computing tracking with", tracker_name)
             start = time.time()
             predictions = track(path, init_tracker(gt), tracker)
-            accuracy, robustness = evaluate(predictions, gt)
+            accuracy, robustness = evaluate(predictions, gt, iou_cutoff=0.7)
             duration = time.time() - start
             print(f'accuracy = {accuracy}, robustness = {robustness}')
             f = open(f'{output_folder}/result.txt', 'a+')
