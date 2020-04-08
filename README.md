@@ -1,0 +1,5 @@
+This project is composed of the 3 following scripts.
+
+- `main.py`: Before running, create folders named `results_30`, `results_50` and `results_70` and change the `output_folder` variable to the folder where you want the results to be saved alongside with the `iou_cutoff` parameter of the `evaluate` function call. Also make sure your video sequences are stored in a folder named `data`. This script will run all the trackers on the video sequences in the data folder, will save the results in the results folder and evaluate them with the IoU threshold specified.
+- `result_parser.py`: This script will parse the contents of the 3 results folders and create graphs that compare the accuracy, robustness and speed of the trackers.
+- `result_visualizer.py`: This script will display the video sequences with the ground truth bounding boxes and the predicted bounding boxes of the video sequence and tracker specified at the bottom of the file. The script allows you to press `Enter` to pause and resume the video.
